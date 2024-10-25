@@ -1,0 +1,59 @@
+create database BIBLIOTECA;
+use biblioteca;
+
+CREATE TABLE STAFF (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(120) NOT NULL,
+    customer_id INT,
+    wage_band CHAR(1) NOT NULL,
+    staff_email VARCHAR(120) NOT NULL,
+    Address_id INT NOT NULL,
+    
+    FOREIGN KEY (customer_id) REFERENCES customer(id),
+    FOREIGN KEY (Address_id) REFERENCES Address(id),
+    CONSTRAINT chk_email CHECK (staff_email LIKE '%_@_%.__%')
+);
+
+CREATE TABLE CUSTOMER (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(120) NOT NULL,
+    email VARCHAR(120) NOT NULL,
+    phone_number int Not null,
+    Address_id INT NOT NULL,
+    
+    FOREIGN KEY (Address_id) REFERENCES Address(id),
+    CONSTRAINT chk_email CHECK (email LIKE '%_@_%.__%')
+);
+
+CREATE TABLE ADDRESS (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    house_number VARCHAR(10) NOT NULL,
+    street_name VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    county VARCHAR(100),
+    postcode VARCHAR(10) NOT NULL,
+    country VARCHAR(100) DEFAULT 'United Kingdom'
+);
+
+CREATE TABLE LOCATION (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+	Floor int not null default 0,
+    Zone CHAR(1) NOT NULL,
+    Shelf_Number int not null,
+    Starting_letter CHAR(1) NOT NULL
+);
+
+CREATE TABLE LOAN (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+	book_id INT NOT NULL,
+    checkout_date date Not null,
+    return_date date,
+    customer_id  INT NOT NULL,
+    staff_id  INT NOT NULL,
+    
+    FOREIGN KEY (customer_id) REFERENCES customer(id),
+    FOREIGN KEY (staff_id) REFERENCES staff(id),
+    FOREIGN KEY (book_id) REFERENCES book(id)
+);
